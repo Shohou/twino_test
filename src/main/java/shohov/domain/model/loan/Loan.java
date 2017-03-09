@@ -22,14 +22,8 @@ public class Loan {
     private String surname;
     @Column(nullable = false)
     private String personalId;
-
-    public Loan(BigDecimal amount, int term, String name, String surname, String personalId) {
-        this.amount = amount;
-        this.term = term;
-        this.name = name;
-        this.surname = surname;
-        this.personalId = personalId;
-    }
+    @Column(nullable = false)
+    private String countryCode;
 
     public Long getId() {
         return id;
@@ -77,5 +71,13 @@ public class Loan {
 
     public void setPersonalId(String personalId) {
         this.personalId = personalId;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 }
