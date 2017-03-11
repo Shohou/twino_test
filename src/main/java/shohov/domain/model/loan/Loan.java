@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -11,25 +12,30 @@ public class Loan {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
+    @NotNull
     @Column(nullable = false)
     private BigDecimal amount;
+    @NotNull
     @Column(nullable = false)
     private int term;
+    @NotNull
     @Column(nullable = false)
     private String name;
+    @NotNull
     @Column(nullable = false)
     private String surname;
+    @NotNull
     @Column(nullable = false)
     private String personalId;
     @Column(nullable = false)
     private String countryCode;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

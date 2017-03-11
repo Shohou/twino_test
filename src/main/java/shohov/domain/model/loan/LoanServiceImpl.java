@@ -1,6 +1,7 @@
 package shohov.domain.model.loan;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,17 +14,17 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void save(Loan loan) {
-        loanRepository.save(loan);
+    public Loan save(Loan loan) {
+        return loanRepository.save(loan);
     }
 
     @Override
     public Page<Loan> getAll(int page, int size) {
-        return null;
+        return loanRepository.findAll(new PageRequest(page, size));
     }
 
     @Override
-    public Page<Loan> getByUserPersonalId(String personalId) {
-        return null;
+    public Page<Loan> getByUserPersonalId(String personalId, int page, int size) {
+        return loanRepository.findByPersonalId(personalId, new PageRequest(page, size));
     }
 }

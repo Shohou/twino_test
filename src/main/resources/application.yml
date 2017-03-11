@@ -1,0 +1,5 @@
+country.limit.service:
+  limit: 5
+
+country.service.geoip:
+  service.url.template: "http://freegeoip.net/json/{ip}"

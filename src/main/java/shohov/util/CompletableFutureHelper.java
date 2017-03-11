@@ -4,6 +4,7 @@ import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.function.Function;
 
 public class CompletableFutureHelper {
@@ -15,7 +16,7 @@ public class CompletableFutureHelper {
     }
 
     public static <T, R> CompletableFuture<R> listenableToCompletable(ListenableFuture<T> future,
-                                                                      Function<T, R> valueConvertor) {
+            Function<T, R> valueConvertor) {
         CompletableFuture<R> completableFuture = new CompletableFuture<R>() {
             @Override
             public boolean cancel(boolean mayInterruptIfRunning) {
@@ -34,7 +35,11 @@ public class CompletableFutureHelper {
         DeferredResult<T> deferredResult = new DeferredResult<>();
         future.thenAccept(deferredResult::setResult)
                 .exceptionally(ex -> {
-                    deferredResult.setErrorResult(ex);
+                    if (ex instanceof CompletionException) {
+                        deferredResult.setErrorResult(ex.getCause());
+                    } else {
+                        deferredResult.setErrorResult(ex);
+                    }
                     return null;
                 });
         return deferredResult;

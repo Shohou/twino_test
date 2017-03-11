@@ -4,9 +4,9 @@ import org.springframework.data.domain.Page;
 
 public interface LoanService {
 
-    void save(Loan loan);
+    Loan save(Loan loan);
 
     Page<Loan> getAll(int page, int size);
 
-    Page<Loan> getByUserPersonalId(String personalId);
+    Page<Loan> getByUserPersonalId(String personalId, int page, int size);
 }
