@@ -6,12 +6,12 @@ import org.springframework.util.concurrent.ListenableFuture
 import org.springframework.web.client.AsyncRestOperations
 import spock.lang.Specification
 
-class CountryServiceImplSpec extends Specification {
+class CountryGeoipServiceImplSpec extends Specification {
 
     def geoIpUrl = "http://lalala/{ip}"
     def restTemplate = Mock AsyncRestOperations
 
-    def service = new CountryServiceImpl(geoIpUrl, restTemplate)
+    def service = new CountryGeoipServiceImpl(geoIpUrl, 'LV', restTemplate)
 
     def ip = "1.2.3.4"
 

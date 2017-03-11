@@ -27,9 +27,9 @@ public class BlacklistRestController {
         blacklistService.save(personalId);
     }
 
-    @GetMapping(produces = { "application/json" })
+    @GetMapping(produces = {"application/json"})
     public Page<BlacklistItem> getAll(@RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUM) int page,
-            @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size) {
+                                      @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size) {
         return blacklistService.getAll(page, size);
     }
 

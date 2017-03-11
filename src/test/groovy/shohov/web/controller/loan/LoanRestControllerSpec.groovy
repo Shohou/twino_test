@@ -5,7 +5,7 @@ import shohov.domain.model.blacklist.BlacklistService
 import shohov.domain.model.loan.Loan
 import shohov.domain.model.loan.LoanService
 import shohov.infrastructure.limit.CountryLimitService
-import shohov.integrations.geoip.CountryService
+import shohov.integrations.geoip.CountryGeoipService
 import spock.lang.Specification
 
 import javax.servlet.http.HttpServletRequest
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture
 class LoanRestControllerSpec extends Specification {
 
     def loanService = Mock LoanService
-    def countryService = Mock CountryService
+    def countryService = Mock CountryGeoipService
     def blacklistService = Mock BlacklistService
     def countryLimitService = Mock CountryLimitService
 

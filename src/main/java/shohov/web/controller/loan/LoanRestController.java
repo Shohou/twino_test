@@ -13,7 +13,7 @@ import shohov.domain.model.blacklist.BlacklistService;
 import shohov.domain.model.loan.Loan;
 import shohov.domain.model.loan.LoanService;
 import shohov.infrastructure.limit.CountryLimitService;
-import shohov.integrations.geoip.CountryService;
+import shohov.integrations.geoip.CountryGeoipService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -29,21 +29,21 @@ public class LoanRestController {
     private static final String DEFAULT_PAGE_SIZE = "20";
 
     private final LoanService loanService;
-    private final CountryService countryService;
+    private final CountryGeoipService countryGeoipService;
     private final BlacklistService blacklistService;
     private final CountryLimitService countryLimitService;
 
-    public LoanRestController(LoanService loanService, CountryService countryService,
-            BlacklistService blacklistService, CountryLimitService countryLimitService) {
+    public LoanRestController(LoanService loanService, CountryGeoipService countryGeoipService,
+                              BlacklistService blacklistService, CountryLimitService countryLimitService) {
         this.loanService = loanService;
-        this.countryService = countryService;
+        this.countryGeoipService = countryGeoipService;
         this.blacklistService = blacklistService;
         this.countryLimitService = countryLimitService;
     }
 
-    @PutMapping(consumes = { "application/json" })
+    @PutMapping(consumes = {"application/json"})
     public DeferredResult<Loan> applyForLoan(@RequestBody @Valid Loan loan, HttpServletRequest request) {
-        return completableToDeferred(countryService.getCountryBy(getClientIpAddress(request))
+        return completableToDeferred(countryGeoipService.getCountryBy(getClientIpAddress(request))
                 .thenApply(countryCode -> {
                     if (blacklistService.isBlacklisted(loan.getPersonalId())) {
                         throw new BlacklistedPersonalIdException("PersonalId [" + loan.getPersonalId() +
@@ -57,16 +57,16 @@ public class LoanRestController {
                 }));
     }
 
-    @GetMapping(produces = { "application/json" })
+    @GetMapping(produces = {"application/json"})
     public Page<Loan> getAll(@RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUM) int page,
-            @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size) {
+                             @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size) {
         return loanService.getAll(page, size);
     }
 
-    @GetMapping(value = "/{personalId}", produces = { "application/json" })
+    @GetMapping(value = "/{personalId}", produces = {"application/json"})
     public Page<Loan> getByUserPersonalId(@PathVariable("personalId") String personalId,
-            @RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUM) int page,
-            @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size) {
+                                          @RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUM) int page,
+                                          @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size) {
         return loanService.getByUserPersonalId(personalId, page, size);
     }
 }

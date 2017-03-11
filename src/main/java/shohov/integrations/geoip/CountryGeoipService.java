@@ -2,7 +2,7 @@ package shohov.integrations.geoip;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface CountryService {
+public interface CountryGeoipService {
 
     CompletableFuture<String> getCountryBy(String ip);
 }

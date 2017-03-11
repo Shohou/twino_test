@@ -25,7 +25,7 @@ public class CountryLimitServiceImpl implements CountryLimitService {
         return counter.incrementAndGet() > limitPerSecond;
     }
 
-    @Scheduled(fixedRate = 10000L)
+    @Scheduled(fixedRate = 1000L)
     void reset() {
         counters.clear();
     }

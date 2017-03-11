@@ -13,16 +13,17 @@ import static org.springframework.http.HttpStatus.OK;
 import static shohov.util.CompletableFutureHelper.listenableToCompletable;
 
 @Service
-public class CountryServiceImpl implements CountryService {
-
-    private static final String DEFAULT_COUNTRY = "LV";
+public class CountryGeoipServiceImpl implements CountryGeoipService {
 
     private final String geoIpServiceUrlTemplate;
+    private final String defaultCountryCode;
     private final AsyncRestOperations restTemplate;
 
-    public CountryServiceImpl(@Value("${country.service.geoip.service.url.template}") String geoIpServiceUrlTemplate,
-            AsyncRestOperations restTemplate) {
+    public CountryGeoipServiceImpl(@Value("${country.geoip.service.service.url.template}") String geoIpServiceUrlTemplate,
+                                   @Value("${country.geoip.service.default.country.code}") String defaultCountryCode,
+                                   AsyncRestOperations restTemplate) {
         this.geoIpServiceUrlTemplate = geoIpServiceUrlTemplate;
+        this.defaultCountryCode = defaultCountryCode;
         this.restTemplate = restTemplate;
     }
 
@@ -37,7 +38,7 @@ public class CountryServiceImpl implements CountryService {
                     return countryCode;
                 }
             }
-            return DEFAULT_COUNTRY;
+            return defaultCountryCode;
         });
     }
 }
